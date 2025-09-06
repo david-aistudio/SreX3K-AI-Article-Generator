@@ -1,0 +1,38 @@
+{
+  "name": "srex3k-ai-article-generator",
+  "version": "1.0.0",
+  "description": "AI Article Generator using Tavily Search API and Google Gemini AI",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ai",
+    "article",
+    "generator",
+    "tavily",
+    "gemini",
+    "research",
+    "web-search"
+  ],
+  "author": "SreX3K Team",
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.1.3",
+    "axios": "^1.6.0",
+    "chalk": "^4.1.2",
+    "dotenv": "^16.3.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/srex3k-ai-article-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/srex3k-ai-article-generator/issues"
+  },
+  "homepage": "https://github.com/yourusername/srex3k-ai-article-generator#readme"
+}
