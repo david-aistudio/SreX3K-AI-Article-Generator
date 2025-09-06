@@ -10,4 +10,4 @@ const TAVILY_CONFIG = {
   }
 };
 
-module.exports = { TAVILY_CONFIG };
+export { TAVILY_CONFIG };

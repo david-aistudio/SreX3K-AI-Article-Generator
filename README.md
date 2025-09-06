@@ -13,6 +13,11 @@
 - **Progress Tracking** - Progress bar 1/3, 2/3, 3/3
 - **Markdown Export** - Hasil otomatis disimpan dalam format markdown
 - **Source Citation** - Referensi dengan link sumber [1], [2], [3]
+- **Multiple Output Formats** - Dukungan untuk Markdown, HTML, dan TXT
+- **Custom Prompt Styles** - Pilihan gaya penulisan (default, akademik, blog, berita)
+- **Enhanced CLI Experience** - Command-line interface yang lebih baik
+- **Comprehensive Error Handling** - Penanganan error yang lebih baik
+- **Detailed Logging** - Logging untuk debugging dan monitoring
 
 ## 📋 Prerequisites
 
@@ -24,7 +29,7 @@
 
 1. **Clone repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/david-aistudio/SreX3K-AI-Article-Generator.git
    cd srex3k-ai-article-generator
    ```
 
@@ -41,6 +46,9 @@
    
    # Google AI Studio API Key (wajib)
    GOOGLE_AI_API_KEY=your_google_ai_api_key_here
+   
+   # Optional: Set log level (error, warn, info, debug)
+   LOG_LEVEL=info
    ```
 
 ## 🎯 Cara Penggunaan
@@ -54,26 +62,45 @@ npm start "Tren AI di Indonesia 2025"
 node index.js "Perkembangan Teknologi Blockchain"
 ```
 
+### CLI Commands
+```bash
+# Gunakan CLI yang ditingkatkan
+npm run cli -- generate "topik artikel kamu"
+
+# List semua artikel yang pernah dibuat
+npm run cli -- list
+
+# View artikel yang sudah dibuat
+npm run cli -- view "nama_file.md"
+
+# Generate dengan format dan prompt khusus
+npm run cli -- generate "topik" --format html --prompt blog
+```
+
 ### Contoh Penggunaan
 ```bash
 # Berita terkini
-node index.js "Pilpres 2024 Indonesia"
+npm run cli -- generate "Pilpres 2024 Indonesia"
 
-# Teknologi
-node index.js "ChatGPT dan Masa Depan AI"
+# Teknologi dengan format HTML
+npm run cli -- generate "ChatGPT dan Masa Depan AI" --format html
 
-# Bisnis & Ekonomi
-node index.js "Strategi Marketing Digital 2025"
+# Artikel akademik
+npm run cli -- generate "Machine Learning in Healthcare" --prompt academic
 
-# Kesehatan
-node index.js "Manfaat Meditasi untuk Kesehatan Mental"
+# Artikel blog dengan format HTML
+npm run cli -- generate "10 Tips Makan Sehat" --prompt blog --format html
+
+# Artikel berita
+npm run cli -- generate "Update Terbaru iPhone 15" --prompt news
 ```
 
 ## 📁 Struktur File & Folder
 
 ```
 srex3k-ai-article-generator/
-├── index.js              # Entry point utama
+├── cli.js               # Enhanced CLI interface
+├── index.js             # Entry point utama (kompatibilitas backward)
 ├── .env                 # API keys
 ├── .gitignore           # File yang diabaikan git
 ├── package.json         # Dependencies & scripts
@@ -81,26 +108,34 @@ srex3k-ai-article-generator/
 ├── LICENSE              # Lisensi MIT
 ├── articles/            # Hasil artikel disimpan di sini
 │   └── research_*.md    # File artikel
-└── src/                 # Source code
-    ├── agents/          # AI agents
-    │   └── tavilyAgent.js # Tavily + Gemini integration
-    ├── config/          # Konfigurasi
-    │   └── tavilyConfig.js # Tavily settings
-    └── utils/           # Utility functions
-        └── researchUtils.js # File handling
+├── src/                 # Source code
+│   ├── agents/          # AI agents
+│   │   └── tavilyAgent.js # Tavily + Gemini integration
+│   ├── config/          # Konfigurasi
+│   │   ├── tavilyConfig.js # Tavily settings
+│   │   └── prompts.js      # Custom prompt templates
+│   ├── errors/          # Custom error classes
+│   │   └── index.js        # Error definitions
+│   ├── utils/           # Utility functions
+│   │   ├── researchUtils.js # File handling
+│   │   └── logger.js        # Logging utility
+└── tests/               # Unit tests
+    ├── index.test.js       # Tests for main CLI
+    ├── researchUtils.test.js # Tests for utilities
+    └── tavilyAgent.test.js   # Tests for AI agent
 ```
 
 ## 🔧 Cara Kerja Sistem
 
 ```
-USER INPUT → TAVILY SEARCH → GEMINI AI → ARTIKEL KOMPREHENSIF → MARKDOWN FILE
+USER INPUT → TAVILY SEARCH → GEMINI AI → ARTIKEL KOMPREHENSIF → FORMAT OUTPUT
 ```
 
 ### Proses Detail:
 1. **User Input**: Pengguna memasukkan topik artikel
 2. **Tavily Research**: Sistem mencari data real-time dari web
 3. **Gemini Processing**: AI menganalisis data dan membuat artikel
-4. **Output Generation**: Artikel disimpan dalam format markdown
+4. **Output Generation**: Artikel disimpan dalam format yang dipilih
 5. **Source Citation**: Referensi dengan link sumber ditambahkan
 
 ## 🔑 API Keys Setup
@@ -142,7 +177,26 @@ Google Gemini untuk generate artikel komprehensif.
 - Bahasa formal tapi mudah dipahami
 - Source citation dengan format [1], [2], [3]
 
-### 3. Progress Tracking
+### 3. Custom Prompt Styles
+Empat gaya penulisan yang bisa dipilih:
+- **default**: Gaya standar untuk artikel umum
+- **academic**: Gaya akademik dengan referensi formal
+- **blog**: Gaya blog dengan bahasa santai dan engaging
+- **news**: Gaya berita dengan struktur jurnalistik
+
+### 4. Multiple Output Formats
+Dukungan untuk tiga format output:
+- **Markdown (.md)**: Format default, cocok untuk dokumentasi
+- **HTML (.html)**: Format web-ready dengan styling dasar
+- **Text (.txt)**: Format teks sederhana
+
+### 5. Enhanced CLI Experience
+CLI yang ditingkatkan dengan command:
+- `generate`: Membuat artikel baru
+- `list`: Menampilkan daftar artikel yang pernah dibuat
+- `view`: Melihat isi artikel yang sudah dibuat
+
+### 6. Progress Tracking
 ```
 Step 1/3: Researching topic with Tavily...
 Progress: [███████░░░░░░░░░░░░░] 33% (1/3)
@@ -155,10 +209,22 @@ Progress: [████████████████████] 100% (3
 ✓ Article generation completed!
 ```
 
-### 4. Export & Storage
+### 7. Export & Storage
 - Otomatis simpan ke `articles/` folder
-- Format markdown (.md)
-- Nama file: `research_topik_timestamp.md`
+- Format berdasarkan pilihan pengguna
+- Nama file: `research_topik_timestamp.format`
+
+### 8. Comprehensive Error Handling
+Penanganan error yang lebih baik dengan:
+- Custom error classes untuk setiap jenis error
+- Informasi error yang lebih detail
+- Solusi spesifik untuk setiap jenis masalah
+
+### 9. Detailed Logging
+Logging untuk debugging dan monitoring:
+- Level logging: error, warn, info, debug
+- Timestamp untuk setiap log entry
+- Informasi detail tentang proses eksekusi
 
 ## 🚀 Command Line Usage
 
@@ -167,27 +233,44 @@ Progress: [████████████████████] 100% (3
 node index.js "topik artikel kamu"
 ```
 
-### NPM Scripts
+### Enhanced CLI
 ```bash
-npm start "topik artikel kamu"
+npm run cli -- generate "topik artikel kamu"
+npm run cli -- list
+npm run cli -- view "nama_file.md"
+```
+
+### Advanced CLI Options
+```bash
+# Generate dengan format khusus
+npm run cli -- generate "topik" --format html
+
+# Generate dengan prompt style khusus
+npm run cli -- generate "topik" --prompt academic
+
+# Kombinasi format dan prompt
+npm run cli -- generate "topik" --format html --prompt blog
+
+# Set log level untuk debugging
+LOG_LEVEL=debug npm run cli -- generate "topik"
 ```
 
 ### Contoh Topik yang Bisa Digunakan
 ```bash
 # Teknologi
-node index.js "Perkembangan AI di Indonesia 2025"
+npm run cli -- generate "Perkembangan AI di Indonesia 2025"
 
 # Bisnis
-node index.js "Strategi Marketing Digital Tahun Ini"
+npm run cli -- generate "Strategi Marketing Digital Tahun Ini" --prompt blog
 
 # Kesehatan
-node index.js "Manfaat Olahraga untuk Kesehatan Mental"
+npm run cli -- generate "Manfaat Olahraga untuk Kesehatan Mental" --prompt academic
 
 # Politik
-node index.js "Tren Pilpres 2024 Indonesia"
+npm run cli -- generate "Tren Pilpres 2024 Indonesia" --prompt news
 
 # Entertainment
-node index.js "Tren Musik Indonesia Tahun Ini"
+npm run cli -- generate "Tren Musik Indonesia Tahun Ini" --prompt blog --format html
 ```
 
 ## 🎨 User Interface
@@ -251,12 +334,43 @@ const TAVILY_CONFIG = {
 };
 ```
 
+### Custom Prompts
+File: `src/config/prompts.js`
+```javascript
+const CUSTOM_PROMPTS = {
+  default: `...`,
+  academic: `...`,
+  blog: `...`,
+  news: `...`
+};
+```
+
 ### Environment Variables
 File: `.env`
 ```env
 TAVILY_API_KEY=your_tavily_api_key_here
 GOOGLE_AI_API_KEY=your_google_ai_api_key_here
+LOG_LEVEL=info
 ```
+
+## 🧪 Testing
+
+Framework testing menggunakan Jest dengan coverage reporting.
+
+### Menjalankan Tests
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+```
+
+### Coverage
+Tests mencakup:
+- Utility functions
+- AI agent functionality
+- CLI interface
 
 ## 📊 Contoh Hasil Artikel
 
@@ -332,7 +446,7 @@ Sources:
 ### Debug Mode
 ```bash
 # Jalankan dengan debug mode
-DEBUG=* node index.js "topik"
+LOG_LEVEL=debug npm run cli -- generate "topik"
 ```
 
 ## 📈 Monitoring & Limits
@@ -378,6 +492,25 @@ npm audit
 - Jangan hardcode di source code
 - Gunakan environment variables
 
+## 🧱 Arsitektur Aplikasi
+
+### Komponen Utama
+1. **CLI Interface** - `cli.js`
+2. **AI Agent** - `src/agents/tavilyAgent.js`
+3. **Utilities** - `src/utils/`
+4. **Configuration** - `src/config/`
+5. **Error Handling** - `src/errors/`
+
+### Alur Eksekusi
+```
+CLI → Validation → Tavily Search → Gemini Generation → Formatting → File Save
+```
+
+### Error Handling
+- Custom error classes untuk setiap jenis error
+- Penanganan error spesifik untuk setiap komponen
+- Logging untuk debugging
+
 ## 🤝 Kontribusi
 
 Kontribusi sangat diterima! Untuk kontribusi:
@@ -401,9 +534,9 @@ Kontribusi sangat diterima! Untuk kontribusi:
 - Issues: https://github.com/google-gemini
 
 ### GitHub Repository
-- Issues: https://github.com/username/srex3k/issues
-- Pull Requests: https://github.com/username/srex3k/pulls
-- Wiki: https://github.com/username/srex3k/wiki
+- Issues: https://github.com/david-aistudio/SreX3K-AI-Article-Generator/issues
+- Pull Requests: https://github.com/david-aistudio/SreX3K-AI-Article-Generator/pulls
+- Wiki: https://github.com/david-aistudio/SreX3K-AI-Article-Generator/wiki
 
 ## 📄 Lisensi
 
@@ -418,3 +551,5 @@ Proyek ini menggunakan teknologi dari:
 - [Chalk](https://npmjs.com/package/chalk) - Terminal styling
 - [Axios](https://npmjs.com/package/axios) - HTTP client
 - [Dotenv](https://npmjs.com/package/dotenv) - Environment variables
+- [Yargs](https://npmjs.com/package/yargs) - CLI argument parser
+- [Jest](https://npmjs.com/package/jest) - Testing framework

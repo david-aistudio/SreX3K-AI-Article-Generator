@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 
 // Import required modules
-const chalk = require('chalk');
-const fs = require('fs').promises;
-const path = require('path');
+import chalk from 'chalk';
+import fs from 'fs';
+import path from 'path';
 
 // Load environment variables
-require('dotenv').config();
+import 'dotenv/config';
 
 // Import Tavily research agent
-const { researchAndGenerateArticle } = require('./src/agents/tavilyAgent');
+import { researchAndGenerateArticle } from './src/agents/tavilyAgent.js';
 
 // Import utils
-const { saveResearchResult } = require('./src/utils/researchUtils');
+import { saveResearchResult } from './src/utils/researchUtils.js';
 
 // Welcome message
 function showWelcome() {
@@ -96,4 +96,8 @@ async function main() {
 }
 
 // Run the application
-main();
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main();
+}
+
+export { main };
