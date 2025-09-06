@@ -126,4 +126,4 @@ Project ini dilisensikan di bawah MIT License - lihat file [LICENSE](LICENSE) un
 
 - [Tavily](https://tavily.com) - Search API untuk AI agents
 - [Google AI](https://aistudio.google.com) - AI models
-- [Node.js](https://nodejs.org) - Runtime environment
+- [Node.js](https://nodejs.org) - Runtime environment# SreX3K-AI-Article-Generator
